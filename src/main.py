@@ -1,21 +1,15 @@
 # Imports
+from scripts.firebase_requests import FirebaseRequests
 from models.response import *
-from typing import List
-from scripts.routes import Routes
-import firebase_admin
-import fastapi
+from typing import List, Any
+from fastapi import FastAPI
+from models.consts import *
 
-# Criação do app da API
-app = fastapi.FastAPI()
+# Variáveis
+app = FastAPI()
+requests = FirebaseRequests()
 
-# Configuração da conexão com o Firebase
-cred = firebase_admin.credentials.Certificate('firebase_key.json')
-firebase_admin.initialize_app(cred)
-
-# Criação do objeto da classe de rotas
-routes = Routes()
-
-# Criação das rotas
+# Rotas
 @app.get('/')
 def home() -> str:
     return 'Bem vindo(a) a API'
@@ -28,4 +22,9 @@ def pessoas() -> List[Pessoas]:
     Returns:
         List[Pessoas]: Registros
     '''
-    return routes.get_all_pessoas()
+    return requests.get_all_pessoas()
+
+@app.post('/pessoas/{parameter}/{operator}/{value}', response_model=List[Pessoas])
+def pessoas_by_parameter(parameter:PESSOAS_FIELDS, operator:FirestoreOperator, value:Any) -> List[Pessoas]:
+    
+    return requests.get_pessoa_by_parameter(parameter, operator, value)
