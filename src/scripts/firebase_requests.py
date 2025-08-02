@@ -64,5 +64,5 @@ class FirebaseRequests():
     
     def create_document(self, value:BaseModel) -> str:
         new_document = self.database.collection(value.__class__.__name__).document()
-        new_document.set(value.model_dump())
+        new_document.set(value.model_dump().pop('id'))
         return new_document.id
