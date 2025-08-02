@@ -1,4 +1,5 @@
-from typing import Literal
+from typing import Literal, TypeVar
+from pydantic import BaseModel
 from enum import Enum
 
 # Enums
@@ -17,4 +18,7 @@ class FirestoreOperator(str, Enum):
     ARRAY_CONTAINS = 'array-contains'
 
 # Constantes
-PESSOAS_FIELDS = Literal['idade', 'nome', 'sexo']
+PESSOAS_FIELDS = Literal['id', 'idade', 'nome', 'sexo']
+
+# Tipagem Genérica
+GENERIC_BASE_MODEL = TypeVar('GENERIC_BASE_MODEL', bound=BaseModel)
